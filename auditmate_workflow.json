@@ -1,0 +1,69 @@
+{
+  "name": "Auditmate Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "read",
+        "spreadsheetId": "1JcCcPpXSgvNkHOEER46XYV5SSHVmn9Owa-4JDch-78s",
+        "sheetName": "Transactions",
+        "headerRow": true,
+        "outputFormat": "JSON"
+      },
+      "name": "Read Google Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{ json: items.map(item => item.json) }];"
+      },
+      "name": "Prepare Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://192.168.29.48:5000/predict",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyContentType": "json",
+        "bodyParametersJson": "={{ $json }}"
+      },
+      "name": "Send to Flask API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Read Google Sheet": {
+      "main": [
+        [
+          {
+            "node": "Prepare Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data": {
+      "main": [
+        [
+          {
+            "node": "Send to Flask API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "1"
+}
