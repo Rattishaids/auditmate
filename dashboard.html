@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUDITMATE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Vibrant Color Palette */
+            --fire-red: #ff2e63;
+            --electric-blue: #08d9d6;
+            --neon-green: #7ef574;
+            --sun-yellow: #ffde7d;
+            --violet-purple: #aa96da;
+            --coral-pink: #ff9a76;
+            --ocean-teal: #42b883;
+            --amber-orange: #ff7e5f;
+            --magenta-pink: #d72323;
+            --lime-green: #c5ff00;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #16213e;
+            --card-bg: #222831;
+            --light-text: #eeeeee;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,46,99,0.1) 0%, rgba(255,46,99,0) 70%);
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 100px) rotate(360deg); }
+        }
+        
+        /* Header Styles */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--fire-red), var(--violet-purple));
+            padding: 2.5rem 0;
+            margin-bottom: 2.5rem;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 10px 30px rgba(255, 46, 99, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 40s linear infinite;
+        }
+        
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+        
+        .header-title {
+            background: linear-gradient(45deg, #fff, var(--sun-yellow), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            100% { text-shadow: 0 0 20px rgba(255, 222, 125, 0.7), 0 0 30px rgba(126, 245, 116, 0.5); }
+        }
+        
+        /* Card Styles */
+        .card-glow {
+            background: rgba(34, 40, 49, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+                        0 0 20px rgba(170, 150, 218, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: 0.5s;
+        }
+        
+        .card-glow:hover::before {
+            left: 100%;
+        }
+        
+        .card-glow:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        0 0 30px rgba(170, 150, 218, 0.3);
+        }
+        
+        .card-header-glow {
+            background: linear-gradient(135deg, rgba(170, 150, 218, 0.2), rgba(255, 46, 99, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            color: var(--light-text);
+            padding: 1.2rem;
+        }
+        
+        /* Button Styles */
+        .btn-glow {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary-glow {
+            background: linear-gradient(135deg, var(--electric-blue), var(--ocean-teal));
+            color: white;
+        }
+        
+        .btn-primary-glow:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(8, 217, 214, 0.4);
+        }
+        
+        .btn-danger-glow {
+            background: linear-gradient(135deg, var(--fire-red), var(--magenta-pink));
+            color: white;
+        }
+        
+        .btn-danger-glow:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 46, 99, 0.4);
+        }
+        
+        .btn-warning-glow {
+            background: linear-gradient(135deg, var(--sun-yellow), var(--amber-orange));
+            color: #333;
+        }
+        
+        .btn-warning-glow:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 222, 125, 0.4);
+        }
+        
+        .btn-success-glow {
+            background: linear-gradient(135deg, var(--neon-green), var(--lime-green));
+            color: #333;
+        }
+        
+        .btn-success-glow:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(126, 245, 116, 0.4);
+        }
+        
+        .btn-info-glow {
+            background: linear-gradient(135deg, var(--violet-purple), #9575cd);
+            color: white;
+        }
+        
+        .btn-info-glow:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(170, 150, 218, 0.4);
+        }
+        
+        /* Table Styles */
+        .table-container {
+            background: rgba(34, 40, 49, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .table-dark-custom {
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--light-text);
+            --bs-table-border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .table-dark-custom thead th {
+            background: linear-gradient(135deg, rgba(170, 150, 218, 0.2), rgba(255, 46, 99, 0.2));
+            border-bottom: 3px solid var(--electric-blue);
+            font-weight: 600;
+            padding: 1rem;
+            color: var(--light-text);
+        }
+        
+        .table-dark-custom tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .table-dark-custom tbody tr:hover {
+            background: linear-gradient(90deg, rgba(170, 150, 218, 0.1), rgba(255, 46, 99, 0.1));
+            transform: translateX(5px);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .anomaly-row {
+            background: linear-gradient(90deg, rgba(255, 46, 99, 0.15), rgba(215, 35, 35, 0.1));
+            animation: alertPulse 2s infinite;
+            position: relative;
+        }
+        
+        .anomaly-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--fire-red), var(--magenta-pink));
+        }
+        
+        @keyframes alertPulse {
+            0%, 100% { box-shadow: inset 0 0 0 0 rgba(255, 46, 99, 0.2); }
+            50% { box-shadow: inset 0 0 20px 0 rgba(255, 46, 99, 0.4); }
+        }
+        
+        .normal-row {
+            background: linear-gradient(90deg, rgba(126, 245, 116, 0.1), rgba(66, 184, 131, 0.1));
+        }
+        
+        /* Badge Styles */
+        .badge-glow {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: badgePop 0.3s ease;
+        }
+        
+        @keyframes badgePop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .badge-danger-glow {
+            background: linear-gradient(135deg, var(--fire-red), var(--magenta-pink));
+            color: white;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+        
+        .badge-success-glow {
+            background: linear-gradient(135deg, var(--neon-green), var(--lime-green));
+            color: #333;
+        }
+        
+        /* Feedback Panel */
+        .feedback-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .feedback-toggle {
+            background: linear-gradient(135deg, var(--violet-purple), var(--fire-red));
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(170, 150, 218, 0.4);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .feedback-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 15px 35px rgba(170, 150, 218, 0.6);
+        }
+        
+        .feedback-container {
+            background: rgba(34, 40, 49, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            width: 450px;
+            height: 650px;
+            overflow: hidden;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100px) scale(0.8); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        
+        /* Live Stats Cards */
+        .stats-card {
+            background: linear-gradient(135deg, rgba(170, 150, 218, 0.2), rgba(8, 217, 214, 0.2));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(170, 150, 218, 0.3);
+        }
+        
+        .stats-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--electric-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Live Clock */
+        .live-clock {
+            background: linear-gradient(135deg, rgba(255, 222, 125, 0.2), rgba(255, 46, 99, 0.2));
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Loading Spinner */
+        .spinner-glow {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--electric-blue);
+            border-radius: 50%;
+            animation: spinGlow 1.5s linear infinite;
+            box-shadow: 0 0 20px var(--electric-blue);
+        }
+        
+        @keyframes spinGlow {
+            0% { transform: rotate(0deg); box-shadow: 0 0 20px var(--electric-blue); }
+            50% { box-shadow: 0 0 40px var(--electric-blue), 0 0 60px var(--violet-purple); }
+            100% { transform: rotate(360deg); box-shadow: 0 0 20px var(--electric-blue); }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            animation: slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 400px;
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Score Indicator */
+        .score-indicator {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .score-indicator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: var(--score-width, 0%);
+            background: linear-gradient(90deg, var(--score-color, transparent), rgba(255, 255, 255, 0.2));
+            z-index: -1;
+            transition: width 0.5s ease;
+        }
+        
+        /* Progress Bar Animation */
+        .progress-glow {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: var(--progress-width, 0%);
+            background: linear-gradient(90deg, var(--fire-red), var(--sun-yellow), var(--neon-green));
+            animation: progressGlow 2s infinite;
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes progressGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animated" id="bgAnimated"></div>
+    
+    <!-- Dashboard Header -->
+    <div class="dashboard-header animate__animated animate__fadeInDown">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="header-title mb-2">
+                        <i class="fas fa-shield-alt me-3"></i>AUDITMATE
+                    </h1>
+                    <p class="mb-0 text-white-50 animate__animated animate__fadeIn animate__delay-1s">
+                        <i class="fas fa-bolt me-2"></i>Real-time Transaction Anomaly Detection System
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="live-clock animate__animated animate__pulse animate__infinite">
+                        <i class="fas fa-clock me-2"></i>
+                        <span id="liveClock" class="fw-bold"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Error Alert -->
+        <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span id="errorMessage"></span>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <!-- Live Stats Row -->
+        <div class="row mb-4 animate__animated animate__fadeInUp">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-value" id="totalTransactions">0</div>
+                    <div class="text-white-50">
+                        <i class="fas fa-list-ol me-2"></i>Total Transactions
+                    </div>
+                    <div class="progress-glow mt-2" style="--progress-width: 0%"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-value text-danger" id="anomalyCount">0</div>
+                    <div class="text-white-50">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Anomalies Detected
+                    </div>
+                    <div class="progress-glow mt-2" style="--progress-width: 0%"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-value text-success" id="normalCount">0</div>
+                    <div class="text-white-50">
+                        <i class="fas fa-check-circle me-2"></i>Normal Transactions
+                    </div>
+                    <div class="progress-glow mt-2" style="--progress-width: 0%"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-value text-warning" id="anomalyRate">0%</div>
+                    <div class="text-white-50">
+                        <i class="fas fa-chart-line me-2"></i>Anomaly Rate
+                    </div>
+                    <div class="progress-glow mt-2" style="--progress-width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Row -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card-glow mb-4 animate__animated animate__fadeInUp">
+                    <div class="card-header-glow d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exchange-alt me-2"></i>Transaction Anomalies
+                            <span class="badge-glow badge-warning-glow ms-2" id="lastUpdated">Just now</span>
+                        </h5>
+                        <button id="refreshBtn" class="btn-glow btn-primary-glow">
+                            <i class="fas fa-sync-alt me-1"></i> Refresh Data
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="loadingSpinner" class="text-center py-5" style="display: none;">
+                            <div class="spinner-glow mx-auto mb-3"></div>
+                            <p class="text-white-50">Loading transaction data...</p>
+                        </div>
+                        <div class="table-container" id="tableContainer" style="display: none;">
+                            <table class="table table-dark-custom table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-fingerprint me-1"></i>Transaction ID</th>
+                                        <th><i class="fas fa-money-bill-wave me-1"></i>Amount</th>
+                                        <th><i class="fas fa-chart-line me-1"></i>Anomaly Score</th>
+                                        <th><i class="fas fa-info-circle me-1"></i>Status</th>
+                                        <th><i class="fas fa-cog me-1"></i>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTable">
+                                    <!-- Results will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Stats -->
+            <div class="col-lg-4">
+                <div class="card-glow mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="card-header-glow">
+                        <h5 class="mb-0"><i class="fas fa-heartbeat me-2"></i>System Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="statusInfo" class="text-center py-3">
+                            <div class="spinner-glow mx-auto mb-3"></div>
+                            <p class="text-white-50">Checking backend status...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-glow animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="card-header-glow">
+                        <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="statsContainer" class="text-center py-3">
+                            <div class="spinner-glow mx-auto mb-3"></div>
+                            <p class="text-white-50">Loading statistics...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Model Info Card -->
+                <div class="card-glow mt-4 animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="card-header-glow">
+                        <h5 class="mb-0"><i class="fas fa-robot me-2"></i>AI Model Info</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="fas fa-brain fa-2x" style="color: var(--electric-blue);"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Isolation Forest</h6>
+                                <small class="text-white-50">Anomaly Detection Model</small>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-white-50">Model Trained:</small>
+                            <div class="fw-bold" id="modelTimestamp">--:--:--</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-white-50">Accuracy Score:</small>
+                            <div class="d-flex align-items-center">
+                                <div class="progress-glow flex-grow-1 me-2" style="--progress-width: 85%"></div>
+                                <span class="fw-bold">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feedback History Panel -->
+    <div class="feedback-panel">
+        <div id="feedbackContainer" class="feedback-container">
+            <div class="card-header-glow">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>Feedback History</h5>
+                    <button class="btn btn-sm btn-outline-light" onclick="toggleFeedbackPanel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="feedback-tabs mt-2">
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-sm btn-outline-light feedback-tab active" data-tab="all">All</button>
+                        <button class="btn btn-sm btn-outline-info feedback-tab" data-tab="false-positive">False +</button>
+                        <button class="btn btn-sm btn-outline-warning feedback-tab" data-tab="false-negative">False -</button>
+                        <button class="btn btn-sm btn-outline-danger feedback-tab" data-tab="confirmed">Confirmed</button>
+                        <button class="btn btn-sm btn-outline-success feedback-tab" data-tab="other">Other</button>
+                    </div>
+                </div>
+            </div>
+            <div class="feedback-body p-3">
+                <div class="feedback-stats mb-3">
+                    <div class="row text-center">
+                        <div class="col-3">
+                            <div class="stat-value text-info" id="totalFeedbackCount">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="stat-value text-info" id="falsePositiveCount">0</div>
+                            <div class="stat-label">False +</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="stat-value text-warning" id="falseNegativeCount">0</div>
+                            <div class="stat-label">False -</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="stat-value text-danger" id="confirmedCount">0</div>
+                            <div class="stat-label">Confirmed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feedback-chart-container mb-3" style="height: 150px;">
+                    <canvas id="feedbackChart"></canvas>
+                </div>
+                
+                <div id="feedbackList">
+                    <div class="empty-state text-center py-5">
+                        <i class="fas fa-comment-slash fa-3x mb-3" style="color: rgba(255,255,255,0.2);"></i>
+                        <p class="text-white-50">No feedback history available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="feedbackToggle" class="feedback-toggle animate__animated animate__bounceIn animate__delay-2s">
+            <i class="fas fa-comments fa-lg"></i>
+        </div>
+    </div>
+
+    <!-- Transaction Details Modal -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content card-glow">
+                <div class="modal-header card-header-glow">
+                    <h5 class="modal-title">
+                        <i class="fas fa-search me-2"></i>Transaction Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stats-card mb-3">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <small class="text-white-50">Transaction ID</small>
+                                        <div class="fw-bold text-truncate" id="detailTransactionId">--</div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <small class="text-white-50">Amount</small>
+                                        <div class="fw-bold" id="detailAmount">$--</div>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <small class="text-white-50">Status</small>
+                                        <div id="detailStatus">--</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-white-50">Anomaly Score</small>
+                                        <div class="fw-bold" id="detailScore">--</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-white-50">Risk Level</small>
+                                        <div class="fw-bold" id="detailRisk">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="chart-container" style="height: 200px;">
+                                <canvas id="detailChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h6><i class="fas fa-comments me-2"></i>Related Feedbacks</h6>
+                        <div id="transactionFeedbacks" class="mt-2">
+                            <div class="alert alert-dark">No feedback for this transaction</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-glow btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn-glow btn-primary-glow" id="provideFeedbackBtn">
+                        <i class="fas fa-comment me-1"></i>Provide Feedback
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Submission Modal -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content card-glow">
+                <div class="modal-header card-header-glow">
+                    <h5 class="modal-title">
+                        <i class="fas fa-comment-dots me-2"></i>Submit Feedback
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="feedbackForm">
+                        <input type="hidden" id="feedbackTransactionId">
+                        <div class="mb-3">
+                            <label class="form-label text-white-50">Transaction ID</label>
+                            <div class="fw-bold" id="feedbackTransactionDisplay">--</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackType" class="form-label text-white-50">Feedback Type</label>
+                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                <button type="button" class="btn btn-sm btn-outline-info feedback-type-option active" data-type="false-positive">
+                                    False Positive
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-warning feedback-type-option" data-type="false-negative">
+                                    False Negative
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger feedback-type-option" data-type="confirmed">
+                                    Confirmed
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-success feedback-type-option" data-type="other">
+                                    Other
+                                </button>
+                            </div>
+                            <input type="hidden" id="feedbackType" value="false-positive" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackUser" class="form-label text-white-50">Your Name</label>
+                            <input type="text" class="form-control bg-dark text-white border-dark" id="feedbackUser" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackNotes" class="form-label text-white-50">Notes</label>
+                            <textarea class="form-control bg-dark text-white border-dark" id="feedbackNotes" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-glow btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-glow btn-primary-glow" id="submitFeedbackBtn">
+                        <i class="fas fa-paper-plane me-1"></i>Submit Feedback
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Configuration
+        const BACKEND_URL = 'http://127.0.0.1:5000';
+        
+        // DOM Elements
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+        const statusInfo = document.getElementById('statusInfo');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const tableContainer = document.getElementById('tableContainer');
+        const resultsTable = document.getElementById('resultsTable');
+        const modelTimestamp = document.getElementById('modelTimestamp');
+        const totalTransactions = document.getElementById('totalTransactions');
+        const anomalyCount = document.getElementById('anomalyCount');
+        const normalCount = document.getElementById('normalCount');
+        const anomalyRate = document.getElementById('anomalyRate');
+        const lastUpdated = document.getElementById('lastUpdated');
+        const feedbackToggle = document.getElementById('feedbackToggle');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        const feedbackList = document.getElementById('feedbackList');
+        const feedbackTabs = document.querySelectorAll('.feedback-tab');
+        const liveClock = document.getElementById('liveClock');
+        const statsContainer = document.getElementById('statsContainer');
+        const transactionModal = new bootstrap.Modal(document.getElementById('transactionModal'));
+        const feedbackModal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+        const provideFeedbackBtn = document.getElementById('provideFeedbackBtn');
+        
+        // Feedback stats elements
+        const totalFeedbackCount = document.getElementById('totalFeedbackCount');
+        const falsePositiveCount = document.getElementById('falsePositiveCount');
+        const falseNegativeCount = document.getElementById('falseNegativeCount');
+        const confirmedCount = document.getElementById('confirmedCount');
+        
+        // Global state
+        let transactions = [];
+        let feedbacks = [];
+        let feedbackChart = null;
+        let detailChart = null;
+        let currentTransactionId = null;
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create animated background
+            createAnimatedBackground();
+            
+            // Initialize functions
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            checkBackendStatus();
+            refreshBtn.addEventListener('click', loadTransactionData);
+            
+            // Feedback toggle
+            feedbackToggle.addEventListener('click', toggleFeedbackPanel);
+            
+            // Feedback tabs
+            feedbackTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    feedbackTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    filterFeedbacks(tab.getAttribute('data-tab'));
+                });
+            });
+            
+            // Feedback type options
+            document.querySelectorAll('.feedback-type-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.feedback-type-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    option.classList.add('active');
+                    document.getElementById('feedbackType').value = option.dataset.type;
+                });
+            });
+            
+            // Feedback submission
+            document.getElementById('submitFeedbackBtn').addEventListener('click', submitFeedback);
+            provideFeedbackBtn.addEventListener('click', () => {
+                if (currentTransactionId) {
+                    showFeedbackForm(currentTransactionId);
+                }
+            });
+            
+            // Initialize feedback chart and load feedback data
+            initFeedbackChart();
+            loadFeedbackData();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(loadTransactionData, 30000);
+        });
+        
+        // Create animated background circles
+        function createAnimatedBackground() {
+            const container = document.getElementById('bgAnimated');
+            const colors = ['#ff2e63', '#08d9d6', '#7ef574', '#ffde7d', '#aa96da'];
+            
+            for (let i = 0; i < 15; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'bg-circle';
+                const size = Math.random() * 300 + 100;
+                circle.style.width = size + 'px';
+                circle.style.height = size + 'px';
+                circle.style.left = Math.random() * 100 + '%';
+                circle.style.top = Math.random() * 100 + '%';
+                circle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]}20 0%, transparent 70%)`;
+                circle.style.animationDuration = Math.random() * 20 + 20 + 's';
+                circle.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(circle);
+            }
+        }
+        
+        // Toggle feedback panel
+        function toggleFeedbackPanel() {
+            const isVisible = feedbackContainer.style.display === 'block';
+            feedbackContainer.style.display = isVisible ? 'none' : 'block';
+            feedbackToggle.classList.toggle('animate__bounce');
+            
+            if (!isVisible) {
+                loadFeedbackData();
+            }
+        }
+        
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            liveClock.textContent = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            }) + ' • ' + now.toLocaleDateString('en-US', { 
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success', duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = `notification alert alert-${type} animate__animated animate__fadeInLeft`;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-3 fa-lg"></i>
+                    <div class="flex-grow-1">${message}</div>
+                    <button type="button" class="btn-close btn-close-white" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.classList.add('animate__fadeOutLeft');
+                    setTimeout(() => notification.remove(), 500);
+                }
+            }, duration);
+        }
+        
+        // Show error
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorAlert.style.display = 'block';
+            setTimeout(() => {
+                errorAlert.classList.add('animate__fadeOut');
+                setTimeout(() => {
+                    errorAlert.style.display = 'none';
+                    errorAlert.classList.remove('animate__fadeOut');
+                }, 500);
+            }, 5000);
+        }
+        
+        // Check backend status
+        async function checkBackendStatus() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    statusInfo.innerHTML = `
+                        <div class="text-start">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="me-3">
+                                    <i class="fas fa-server fa-2x" style="color: var(--neon-green);"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">Backend Active</h5>
+                                    <small class="text-success">All systems operational</small>
+                                </div>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-white-50">Model Status:</span>
+                                    <span class="fw-bold ${data.model_ready ? 'text-success' : 'text-danger'}">
+                                        ${data.model_ready ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-white-50">Data Loaded:</span>
+                                    <span class="fw-bold ${data.data_loaded ? 'text-success' : 'text-danger'}">
+                                        ${data.data_loaded ? 'Yes' : 'No'}
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-white-50">Last Check:</span>
+                                    <span class="fw-bold">${new Date().toLocaleTimeString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    loadTransactionData();
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Backend check failed:', error);
+                statusInfo.innerHTML = `
+                    <div class="alert alert-danger">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-3 fa-lg"></i>
+                            <div>
+                                <h5 class="mb-1">Connection Failed</h5>
+                                <p class="mb-2 small">${error.message}</p>
+                                <small>Ensure backend is running at ${BACKEND_URL}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load transaction data
+        async function loadTransactionData() {
+            try {
+                loadingSpinner.style.display = 'block';
+                tableContainer.style.display = 'none';
+                resultsTable.innerHTML = '';
+                
+                const response = await fetch(`${BACKEND_URL}/predict`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    transactions = data.results;
+                    displayTransactionData(data);
+                    updateStats(data);
+                    modelTimestamp.textContent = data.model_timestamp || '--:--:--';
+                    lastUpdated.textContent = 'Just now';
+                    
+                    // Add pulse animation to refresh button
+                    refreshBtn.classList.add('animate__pulse');
+                    setTimeout(() => refreshBtn.classList.remove('animate__pulse'), 1000);
+                    
+                    showNotification('Data refreshed successfully!', 'success');
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError(`Failed to load data: ${error.message}`);
+            } finally {
+                loadingSpinner.style.display = 'none';
+                tableContainer.style.display = 'block';
+            }
+        }
+        
+        // Load feedback data
+        async function loadFeedbackData() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/feedback`);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    feedbacks = data.feedbacks;
+                    updateFeedbackUI();
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.warn('Failed to load feedback data:', error.message);
+                updateFeedbackUI();
+            }
+        }
+        
+        // Update statistics
+        function updateStats(data) {
+            const total = data.total || transactions.length;
+            const anomalies = data.anomalies || transactions.filter(tx => tx.IsAnomaly === 1).length;
+            const normal = total - anomalies;
+            const rate = total > 0 ? ((anomalies / total) * 100).toFixed(1) : 0;
+            
+            // Update cards
+            totalTransactions.textContent = total;
+            anomalyCount.textContent = anomalies;
+            normalCount.textContent = normal;
+            anomalyRate.textContent = rate + '%';
+            
+            // Update progress bars
+            document.querySelectorAll('.progress-glow').forEach((bar, index) => {
+                let width = 0;
+                switch(index) {
+                    case 0: width = Math.min((total / 200) * 100, 100); break;
+                    case 1: width = Math.min((anomalies / 50) * 100, 100); break;
+                    case 2: width = Math.min((normal / 200) * 100, 100); break;
+                    case 3: width = rate; break;
+                }
+                bar.style.setProperty('--progress-width', width + '%');
+            });
+            
+            // Update stats chart
+            if (data.results) {
+                updateStatsChart(data);
+            }
+        }
+        
+        // Update stats chart
+        function updateStatsChart(data) {
+            const anomalies = data.results.filter(tx => tx.IsAnomaly === 1);
+            const normal = data.results.filter(tx => tx.IsAnomaly !== 1);
+            
+            statsContainer.innerHTML = `
+                <div class="chart-container" style="height: 200px;">
+                    <canvas id="statsChart"></canvas>
+                </div>
+                <div class="row text-center mt-3">
+                    <div class="col-6">
+                        <div class="p-3 rounded" style="background: rgba(255,46,99,0.1);">
+                            <h3 class="text-danger">${anomalies.length}</h3>
+                            <small class="text-white-50">Anomalies</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 rounded" style="background: rgba(126,245,116,0.1);">
+                            <h3 class="text-success">${normal.length}</h3>
+                            <small class="text-white-50">Normal</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Initialize chart
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Anomalies', 'Normal'],
+                    datasets: [{
+                        data: [anomalies.length, normal.length],
+                        backgroundColor: ['#ff2e63', '#7ef574'],
+                        borderColor: ['rgba(255,255,255,0.1)', 'rgba(255,255,255,0.1)'],
+                        borderWidth: 2,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#eeeeee',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+        
+        // Display transaction data
+        function displayTransactionData(data) {
+            resultsTable.innerHTML = '';
+            
+            data.results.forEach(transaction => {
+                const row = document.createElement('tr');
+                row.className = transaction.IsAnomaly === 1 ? 'anomaly-row animate__animated animate__fadeIn' : 'normal-row animate__animated animate__fadeIn';
+                
+                // Calculate score color
+                let scoreColor = '#7ef574'; // Green
+                if (transaction.AnomalyScore > 0.5) scoreColor = '#ff2e63'; // Red
+                else if (transaction.AnomalyScore > 0.2) scoreColor = '#ffde7d'; // Yellow
+                
+                row.innerHTML = `
+                    <td>
+                        <span class="transaction-id" style="color: var(--electric-blue);">
+                            <i class="fas fa-hashtag me-1"></i>${transaction.TransactionID}
+                        </span>
+                    </td>
+                    <td class="fw-bold" style="color: var(--sun-yellow);">
+                        $${transaction.Amount.toFixed(2)}
+                    </td>
+                    <td>
+                        <span class="score-indicator" style="--score-width: ${Math.min(transaction.AnomalyScore * 100, 100)}%; --score-color: ${scoreColor}20;">
+                            ${transaction.AnomalyScore.toFixed(4)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge-glow ${transaction.IsAnomaly === 1 ? 'badge-danger-glow' : 'badge-success-glow'}">
+                            <i class="fas ${transaction.IsAnomaly === 1 ? 'fa-exclamation-triangle' : 'fa-check-circle'} me-1"></i>
+                            ${transaction.IsAnomaly === 1 ? 'ANOMALY' : 'NORMAL'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-info view-details" data-id="${transaction.TransactionID}" title="View Details">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning submit-feedback" data-id="${transaction.TransactionID}" title="Provide Feedback">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                resultsTable.appendChild(row);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.view-details').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const txId = e.target.closest('button').dataset.id;
+                    showTransactionDetails(txId);
+                });
+            });
+            
+            document.querySelectorAll('.submit-feedback').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const txId = e.target.closest('button').dataset.id;
+                    showFeedbackForm(txId);
+                });
+            });
+        }
+        
+        // Show transaction details
+        function showTransactionDetails(txId) {
+            currentTransactionId = txId;
+            const transaction = transactions.find(tx => tx.TransactionID === txId);
+            if (!transaction) return;
+            
+            // Determine risk level
+            let riskLevel, riskClass, riskColor;
+            if (transaction.AnomalyScore > 0.5) {
+                riskLevel = 'High Risk';
+                riskClass = 'risk-high';
+                riskColor = '#ff2e63';
+            } else if (transaction.AnomalyScore > 0.2) {
+                riskLevel = 'Medium Risk';
+                riskClass = 'risk-medium';
+                riskColor = '#ffde7d';
+            } else {
+                riskLevel = 'Low Risk';
+                riskClass = 'risk-low';
+                riskColor = '#7ef574';
+            }
+            
+            // Update modal content
+            document.getElementById('detailTransactionId').textContent = transaction.TransactionID;
+            document.getElementById('detailAmount').textContent = `$${transaction.Amount.toFixed(2)}`;
+            document.getElementById('detailScore').textContent = transaction.AnomalyScore.toFixed(4);
+            document.getElementById('detailStatus').innerHTML = transaction.IsAnomaly === 1 ? 
+                '<span class="badge-glow badge-danger-glow">ANOMALY</span>' : 
+                '<span class="badge-glow badge-success-glow">NORMAL</span>';
+            document.getElementById('detailRisk').innerHTML = `<span style="color: ${riskColor}">${riskLevel}</span>`;
+            
+            // Update related feedbacks
+            const txFeedbacks = feedbacks.filter(fb => fb.transactionId === txId);
+            const feedbacksContainer = document.getElementById('transactionFeedbacks');
+            
+            if (txFeedbacks.length === 0) {
+                feedbacksContainer.innerHTML = '<div class="alert alert-dark">No feedback for this transaction</div>';
+            } else {
+                feedbacksContainer.innerHTML = txFeedbacks.map(fb => `
+                    <div class="feedback-item ${fb.feedbackType} mb-2 p-2 rounded" style="background: rgba(255,255,255,0.05);">
+                        <div class="feedback-meta small">
+                            <strong>${fb.feedbackUser}</strong> • ${new Date(fb.timestamp).toLocaleString()}
+                        </div>
+                        <div class="feedback-content mt-1">${fb.feedbackNotes}</div>
+                    </div>
+                `).join('');
+            }
+            
+            // Initialize chart
+            const ctx = document.getElementById('detailChart').getContext('2d');
+            if (detailChart) detailChart.destroy();
+            
+            detailChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Anomaly Score'],
+                    datasets: [{
+                        label: 'Current Transaction',
+                        data: [transaction.AnomalyScore],
+                        backgroundColor: riskColor,
+                        borderColor: 'rgba(255,255,255,0.3)',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }, {
+                        label: 'Threshold (0.5)',
+                        data: [0.5],
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        type: 'line',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#eeeeee'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            },
+                            ticks: {
+                                color: '#eeeeee'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            },
+                            ticks: {
+                                color: '#eeeeee'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            transactionModal.show();
+        }
+        
+        // Show feedback form
+        function showFeedbackForm(txId) {
+            currentTransactionId = txId;
+            document.getElementById('feedbackTransactionId').value = txId;
+            document.getElementById('feedbackTransactionDisplay').textContent = txId;
+            document.getElementById('feedbackType').value = 'false-positive';
+            document.getElementById('feedbackUser').value = '';
+            document.getElementById('feedbackNotes').value = '';
+            
+            // Reset type options
+            document.querySelectorAll('.feedback-type-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.dataset.type === 'false-positive') {
+                    opt.classList.add('active');
+                }
+            });
+            
+            transactionModal.hide();
+            setTimeout(() => feedbackModal.show(), 300);
+        }
+        
+        // Submit feedback
+        async function submitFeedback() {
+            const transactionId = document.getElementById('feedbackTransactionId').value;
+            const feedbackType = document.getElementById('feedbackType').value;
+            const feedbackUser = document.getElementById('feedbackUser').value;
+            const feedbackNotes = document.getElementById('feedbackNotes').value;
+            
+            if (!transactionId || !feedbackType || !feedbackUser || !feedbackNotes) {
+                showNotification('Please fill out all fields!', 'warning');
+                return;
+            }
+            
+            const feedbackData = {
+                transactionId,
+                feedbackType,
+                feedbackUser,
+                feedbackNotes,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/feedback`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(feedbackData)
+                });
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    feedbacks.push(feedbackData);
+                    updateFeedbackUI();
+                    feedbackModal.hide();
+                    showNotification('Feedback submitted successfully!', 'success');
+                    
+                    // Reload feedback data
+                    await loadFeedbackData();
+                } else {
+                    throw new Error(data.error || 'Failed to submit feedback');
+                }
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                showNotification('Failed to submit feedback. Please try again.', 'danger');
+            }
+        }
+        
+        // Initialize feedback chart
+        function initFeedbackChart() {
+            const ctx = document.getElementById('feedbackChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            if (feedbackChart) feedbackChart.destroy();
+            
+            feedbackChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['False Positives', 'False Negatives', 'Confirmed', 'Other'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#08d9d6', '#ffde7d', '#ff2e63', '#7ef574'],
+                        borderColor: ['rgba(255,255,255,0.1)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0.1)'],
+                        borderWidth: 2,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+        
+        // Update feedback UI
+        function updateFeedbackUI() {
+            updateFeedbackStats();
+            updateFeedbackList();
+            filterFeedbacks('all');
+        }
+        
+        // Update feedback statistics
+        function updateFeedbackStats() {
+            const falsePositive = feedbacks.filter(fb => fb.feedbackType === 'false-positive').length;
+            const falseNegative = feedbacks.filter(fb => fb.feedbackType === 'false-negative').length;
+            const confirmed = feedbacks.filter(fb => fb.feedbackType === 'confirmed').length;
+            const other = feedbacks.filter(fb => fb.feedbackType === 'other').length;
+            const total = feedbacks.length;
+            
+            totalFeedbackCount.textContent = total;
+            falsePositiveCount.textContent = falsePositive;
+            falseNegativeCount.textContent = falseNegative;
+            confirmedCount.textContent = confirmed;
+            
+            // Update chart
+            if (feedbackChart) {
+                feedbackChart.data.datasets[0].data = [falsePositive, falseNegative, confirmed, other];
+                feedbackChart.update();
+            } else {
+                initFeedbackChart();
+            }
+        }
+        
+        // Update feedback list
+        function updateFeedbackList() {
+            if (feedbacks.length === 0) {
+                feedbackList.innerHTML = `
+                    <div class="empty-state text-center py-5">
+                        <i class="fas fa-comment-slash fa-3x mb-3" style="color: rgba(255,255,255,0.2);"></i>
+                        <p class="text-white-50">No feedback history available</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            feedbackList.innerHTML = feedbacks.map(fb => `
+                <div class="feedback-item ${fb.feedbackType} mb-3 p-3 rounded" style="background: rgba(255,255,255,0.05); border-left: 4px solid ${getFeedbackColor(fb.feedbackType)};">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="feedback-meta small mb-1">
+                                <span class="badge-glow" style="background: ${getFeedbackColor(fb.feedbackType)}; color: white;">
+                                    ${formatFeedbackType(fb.feedbackType)}
+                                </span>
+                                <span class="ms-2 text-white-50">Transaction #${fb.transactionId}</span>
+                            </div>
+                            <div class="feedback-meta small text-white-50 mb-2">
+                                <i class="fas fa-user me-1"></i>${fb.feedbackUser} • 
+                                <i class="fas fa-clock ms-2 me-1"></i>${new Date(fb.timestamp).toLocaleString()}
+                            </div>
+                            <div class="feedback-content">${fb.feedbackNotes}</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-light ms-2 view-transaction" data-id="${fb.transactionId}" title="View Transaction">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners
+            document.querySelectorAll('.view-transaction').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const txId = e.target.closest('button').dataset.id;
+                    showTransactionDetails(txId);
+                });
+            });
+        }
+        
+        // Filter feedbacks
+        function filterFeedbacks(type) {
+            if (type === 'all') {
+                updateFeedbackList();
+                return;
+            }
+            
+            const filtered = feedbacks.filter(fb => fb.feedbackType === type);
+            
+            if (filtered.length === 0) {
+                feedbackList.innerHTML = `
+                    <div class="empty-state text-center py-5">
+                        <i class="fas fa-comment-slash fa-3x mb-3" style="color: rgba(255,255,255,0.2);"></i>
+                        <p class="text-white-50">No ${formatFeedbackType(type).toLowerCase()} feedback</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            feedbackList.innerHTML = filtered.map(fb => `
+                <div class="feedback-item ${fb.feedbackType} mb-3 p-3 rounded" style="background: rgba(255,255,255,0.05); border-left: 4px solid ${getFeedbackColor(fb.feedbackType)};">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="feedback-meta small mb-1">
+                                <span class="badge-glow" style="background: ${getFeedbackColor(fb.feedbackType)}; color: white;">
+                                    ${formatFeedbackType(fb.feedbackType)}
+                                </span>
+                                <span class="ms-2 text-white-50">Transaction #${fb.transactionId}</span>
+                            </div>
+                            <div class="feedback-meta small text-white-50 mb-2">
+                                <i class="fas fa-user me-1"></i>${fb.feedbackUser} • 
+                                <i class="fas fa-clock ms-2 me-1"></i>${new Date(fb.timestamp).toLocaleString()}
+                            </div>
+                            <div class="feedback-content">${fb.feedbackNotes}</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-light ms-2 view-transaction" data-id="${fb.transactionId}" title="View Transaction">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners
+            document.querySelectorAll('.view-transaction').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const txId = e.target.closest('button').dataset.id;
+                    showTransactionDetails(txId);
+                });
+            });
+        }
+        
+        // Helper functions
+        function formatFeedbackType(type) {
+            return type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        }
+        
+        function getFeedbackColor(type) {
+            switch(type) {
+                case 'false-positive': return '#08d9d6';
+                case 'false-negative': return '#ffde7d';
+                case 'confirmed': return '#ff2e63';
+                case 'other': return '#7ef574';
+                default: return '#aaaaaa';
+            }
+        }
+        
+        function getFeedbackBadgeClass(type) {
+            switch(type) {
+                case 'false-positive': return 'bg-info';
+                case 'false-negative': return 'bg-warning';
+                case 'confirmed': return 'bg-danger';
+                case 'other': return 'bg-success';
+                default: return 'bg-secondary';
+            }
+        }
+    </script>
+</body>
+</html>
